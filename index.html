@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refo.games — Free Brain Games</title>
+<meta name="description" content="Free memory, puzzle and reflex games. No download needed. Play instantly in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#080b14;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* STARS */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 10%,rgba(255,255,255,0.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 60%,rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 25%,rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 70%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 45%,rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 15% 80%,rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 85%,rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 65%,rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 5% 50%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 95% 15%,rgba(255,255,255,0.5) 0%,transparent 100%);
+  pointer-events:none;z-index:0;
+}
+
+.container{max-width:480px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:40px 16px 24px;
+  position:relative;z-index:1;
+}
+.header-crown{font-size:44px;margin-bottom:12px;display:block;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.header-sub{
+  font-size:14px;color:rgba(255,255,255,0.5);
+  letter-spacing:0.2px;
+}
+.header-sub span{color:#00e5a0;font-weight:600}
+
+/* CATEGORY PILLS */
+.cats{
+  display:flex;gap:10px;justify-content:center;
+  padding:0 16px 28px;flex-wrap:wrap;
+  position:relative;z-index:1;
+}
+.cat{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 18px;border-radius:99px;
+  font-size:13px;font-weight:700;
+  border:1.5px solid rgba(255,255,255,0.15);
+  cursor:pointer;transition:all 0.2s;
+  background:transparent;color:rgba(255,255,255,0.5);
+}
+.cat:hover{border-color:rgba(255,255,255,0.4);color:#fff}
+.cat-active{
+  background:rgba(255,255,255,0.1);
+  border-color:rgba(255,255,255,0.5);
+  color:#fff;
+}
+
+/* SECTION LABEL */
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:3px;
+  color:rgba(255,255,255,0.3);
+  text-align:center;text-transform:uppercase;
+  margin-bottom:16px;
+  position:relative;z-index:1;
+}
+.section-label::before,.section-label::after{
+  content:'';display:inline-block;width:24px;height:1px;
+  background:rgba(255,255,255,0.2);vertical-align:middle;margin:0 10px;
+}
+
+/* GAMES LIST */
+.games{
+  display:flex;flex-direction:column;gap:14px;
+  padding:0 16px 16px;
+  position:relative;z-index:1;
+}
+
+/* GAME CARD */
+.gcard{
+  border-radius:20px;
+  padding:22px 20px 18px;
+  text-decoration:none;color:#fff;
+  display:block;
+  transition:transform 0.25s,box-shadow 0.25s;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.07);
+}
+.gcard:hover{transform:translateY(-3px)}
+.gcard::before{content:'';position:absolute;inset:0;opacity:0.07;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
+
+/* Card colors */
+.card-purple{background:linear-gradient(145deg,#1a0a35 0%,#2d1060 50%,#1a0a35 100%);box-shadow:0 8px 32px rgba(124,58,255,0.25)}
+.card-blue{background:linear-gradient(145deg,#071428 0%,#0c2454 50%,#071428 100%);box-shadow:0 8px 32px rgba(59,130,246,0.2)}
+.card-green{background:linear-gradient(145deg,#061a0e 0%,#0d3320 50%,#061a0e 100%);box-shadow:0 8px 32px rgba(52,211,153,0.2)}
+
+.card-icon{font-size:36px;margin-bottom:10px;display:block}
+.card-type{
+  font-size:10px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:6px;
+}
+.type-purple{color:#a78bfa}
+.type-blue{color:#60a5fa}
+.type-green{color:#34d399}
+
+.card-name{
+  font-size:24px;font-weight:800;
+  letter-spacing:-0.5px;margin-bottom:6px;
+  line-height:1.1;
+}
+.card-desc{
+  font-size:13px;color:rgba(255,255,255,0.5);
+  line-height:1.5;margin-bottom:16px;
+}
+
+/* CARD STATS */
+.card-stats{
+  display:flex;gap:8px;margin-bottom:16px;
+}
+.cstat{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:8px 12px;
+  text-align:center;flex:1;
+}
+.cstat-val{font-size:16px;font-weight:800;margin-bottom:2px}
+.cstat-label{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+
+/* CARD FOOTER */
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-badges{display:flex;gap:6px}
+.badge{
+  font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:99px;
+  display:flex;align-items:center;gap:4px;
+}
+.badge-free{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3)}
+.badge-popular{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3)}
+.badge-new{background:rgba(96,165,250,0.15);color:#60a5fa;border:1px solid rgba(96,165,250,0.3)}
+
+.play-btn{
+  display:flex;align-items:center;gap:6px;
+  font-size:14px;font-weight:700;
+  padding:10px 18px;border-radius:12px;
+  border:none;cursor:pointer;
+  transition:all 0.2s;text-decoration:none;
+  white-space:nowrap;
+}
+.play-purple{background:linear-gradient(135deg,#7c3aff,#a855f7);color:#fff;box-shadow:0 4px 15px rgba(124,58,255,0.4)}
+.play-purple:hover{box-shadow:0 6px 20px rgba(124,58,255,0.6);transform:scale(1.03)}
+.play-blue{background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;box-shadow:0 4px 15px rgba(59,130,246,0.4)}
+.play-blue:hover{box-shadow:0 6px 20px rgba(59,130,246,0.6);transform:scale(1.03)}
+.play-green{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 4px 15px rgba(16,185,129,0.4)}
+.play-green:hover{box-shadow:0 6px 20px rgba(16,185,129,0.6);transform:scale(1.03)}
+
+/* COMING SOON CARD */
+.coming-card{
+  margin:0 16px;
+  border:1px dashed rgba(255,255,255,0.1);
+  border-radius:20px;
+  padding:28px;
+  text-align:center;
+  position:relative;z-index:1;
+}
+.coming-rocket{font-size:32px;margin-bottom:10px;display:block;animation:float 2.5s ease-in-out infinite}
+.coming-label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:4px}
+.coming-title{font-size:15px;font-weight:700;color:rgba(255,255,255,0.35);margin-bottom:4px}
+.coming-sub{font-size:12px;color:rgba(255,255,255,0.2)}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:32px 16px 48px;
+  position:relative;z-index:1;
+}
+.footer-domain{
+  font-size:15px;font-weight:800;
+  color:#60a5fa;letter-spacing:0.5px;
+  text-decoration:none;margin-bottom:6px;display:block;
+}
+.footer-sub{font-size:12px;color:rgba(255,255,255,0.25)}
+
+/* GLOW EFFECTS */
+.glow-purple{position:absolute;width:200px;height:200px;background:rgba(124,58,255,0.12);border-radius:50%;filter:blur(60px);top:-40px;right:-40px;pointer-events:none}
+.glow-blue{position:absolute;width:160px;height:160px;background:rgba(59,130,246,0.1);border-radius:50%;filter:blur(50px);bottom:-30px;left:-30px;pointer-events:none}
+.glow-green{position:absolute;width:160px;height:160px;background:rgba(52,211,153,0.1);border-radius:50%;filter:blur(50px);top:-30px;left:-30px;pointer-events:none}
+
+@media(max-width:380px){
+  .card-name{font-size:20px}
+  .cstat-val{font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <span class="header-crown">👑</span>
+  <p class="header-sub" id="header-sub">No download. Just <span>play.</span></p>
+</header>
+
+<!-- LANGUAGE SELECTOR -->
+<div class="cats">
+  <button id="lang-tr" class="cat cat-active" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+  <button id="lang-en" class="cat" onclick="setLang('en')">🇬🇧 English</button>
+  <button id="lang-zh" class="cat" onclick="setLang('zh')">🇨🇳 中文</button>
+</div>
+
+<!-- SECTION LABEL -->
+<div class="section-label" id="section-label">Games</div>
+
+<!-- GAMES -->
+<div class="games">
+
+  <!-- What's Missing -->
+  <a href="whats-missing/" class="gcard card-purple">
+    <div class="glow-purple"></div>
+    <span class="card-icon">👁️</span>
+    <div class="card-type type-purple" id="wm-type">Memory Game</div>
+    <div class="card-name" id="wm-name">What's Missing?</div>
+    <div class="card-desc" id="wm-desc">Memorize the emojis — one disappears. Which one?</div>
+    <div class="card-stats">
+      <div class="cstat">
+        <div class="cstat-val">3</div>
+        <div class="cstat-label">Modes</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-val">TR/EN</div>
+        <div class="cstat-label">Language</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-val">∞</div>
+        <div class="cstat-label">Levels</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-badges">
+        <span class="badge badge-free">✅ Free</span>
+        <span class="badge badge-popular">🔥 Popular</span>
+      </div>
+      <span class="play-btn play-purple" id="wm-play">Play ▶</span>
+    </div>
+  </a>
+
+  <!-- Coming Soon 1 -->
+  <div class="gcard card-blue" style="opacity:0.6;pointer-events:none">
+    <div class="glow-blue"></div>
+    <span class="card-icon">⚡</span>
+    <div class="card-type type-blue" id="rr-type">Reflex Game</div>
+    <div class="card-name" id="rr-name">Reflex Rush</div>
+    <div class="card-desc" id="rr-desc">Tap the right target before time runs out. How fast are you really?</div>
+    <div class="card-stats">
+      <div class="cstat">
+        <div class="cstat-val">—</div>
+        <div class="cstat-label">Modes</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-val">TR/EN</div>
+        <div class="cstat-label">Language</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-val">∞</div>
+        <div class="cstat-label">Levels</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-badges">
+        <span class="badge badge-free">✅ Free</span>
+        <span class="badge badge-new">✨ Soon</span>
+      </div>
+      <span class="play-btn play-blue" style="opacity:0.5" id="rr-play">Soon ▶</span>
+    </div>
+  </div>
+
+  <!-- Coming Soon 2 -->
+  <div class="gcard card-green" style="opacity:0.6;pointer-events:none">
+    <div class="glow-green"></div>
+    <span class="card-icon">🧩</span>
+    <div class="card-type type-green" id="ws-type">Puzzle Game</div>
+    <div class="card-name" id="ws-name">Word Snap</div>
+    <div class="card-desc" id="ws-desc">Unscramble the word before the clock hits zero. New word every round.</div>
+    <div class="card-stats">
+      <div class="cstat">
+        <div class="cstat-val">—</div>
+        <div class="cstat-label">Modes</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-val">TR/EN</div>
+        <div class="cstat-label">Language</div>
+      </div>
+      <div class="cstat">
+        <div class="cstat-val">∞</div>
+        <div class="cstat-label">Levels</div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="card-badges">
+        <span class="badge badge-free">✅ Free</span>
+        <span class="badge badge-new">✨ Soon</span>
+      </div>
+      <span class="play-btn play-green" style="opacity:0.5" id="ws-play">Soon ▶</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- COMING SOON -->
+<div class="coming-card" style="margin-top:14px">
+  <span class="coming-rocket">🚀</span>
+  <div class="coming-label" id="coming-label">Coming Soon</div>
+  <div class="coming-title" id="coming-title">New Game in Development</div>
+  <div class="coming-sub" id="coming-sub">Stay tuned...</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-domain">REFO.GAMES</a>
+  <div class="footer-sub" id="footer-sub">All games are free · Play in browser</div>
+</footer>
+
+<script>
+var LANGS={
+  tr:{
+    sub:"Uygulama indirme. Sadece <span>oyna.</span>",
+    sectionLabel:"OYUNLAR",
+    wm_type:"Hafıza Oyunu",wm_name:"What's Missing?",wm_desc:"Emojileri hafızana al — bir tanesi kayboluyor. Hangisi?",
+    wm_modes:"3",wm_lang:"TR/EN",wm_levels:"∞",
+    wm_play:"Oyna ▶",
+    rr_type:"Refleks Oyunu",rr_name:"Reflex Rush",rr_desc:"Süre dolmadan doğru hedefe dokun. Gerçekten ne kadar hızlısın?",
+    rr_play:"Yakında ▶",
+    ws_type:"Bulmaca Oyunu",ws_name:"Word Snap",ws_desc:"Sıfır sıfıra gelmeden kelimeyi çöz. Her turda yeni kelime.",
+    ws_play:"Yakında ▶",
+    badge_free:"✅ Ücretsiz",badge_popular:"🔥 Popüler",badge_soon:"✨ Yakında",
+    coming_label:"YAKINDA",coming_title:"Yeni Oyun Geliyor",coming_sub:"Geliştirme devam ediyor...",
+    footer_sub:"Tüm oyunlar ücretsiz · Tarayıcıdan oyna",
+  },
+  en:{
+    sub:"No download. Just <span>play.</span>",
+    sectionLabel:"GAMES",
+    wm_type:"Memory Game",wm_name:"What's Missing?",wm_desc:"Memorize the emojis — one disappears. Which one?",
+    wm_modes:"3",wm_lang:"TR/EN",wm_levels:"∞",
+    wm_play:"Play ▶",
+    rr_type:"Reflex Game",rr_name:"Reflex Rush",rr_desc:"Tap the right target before time runs out. How fast are you?",
+    rr_play:"Coming ▶",
+    ws_type:"Puzzle Game",ws_name:"Word Snap",ws_desc:"Unscramble the word before the clock hits zero.",
+    ws_play:"Coming ▶",
+    badge_free:"✅ Free",badge_popular:"🔥 Popular",badge_soon:"✨ Soon",
+    coming_label:"COMING SOON",coming_title:"New Game in Development",coming_sub:"Stay tuned...",
+    footer_sub:"All games are free · Play in browser",
+  },
+  zh:{
+    sub:"无需下载。直接<span>玩。</span>",
+    sectionLabel:"游戏",
+    wm_type:"记忆游戏",wm_name:"少了什么?",wm_desc:"记住这些表情符号 — 有一个消失了。是哪个?",
+    wm_modes:"3",wm_lang:"TR/EN",wm_levels:"∞",
+    wm_play:"开始玩 ▶",
+    rr_type:"反应力游戏",rr_name:"反应冲刺",rr_desc:"在时间用完前点击正确的目标。你有多快?",
+    rr_play:"即将推出 ▶",
+    ws_type:"益智游戏",ws_name:"单词快闪",ws_desc:"在倒计时结束前重新排列单词。每局新单词。",
+    ws_play:"即将推出 ▶",
+    badge_free:"✅ 免费",badge_popular:"🔥 热门",badge_soon:"✨ 即将推出",
+    coming_label:"即将推出",coming_title:"新游戏开发中",coming_sub:"敬请期待...",
+    footer_sub:"所有游戏免费 · 在浏览器中游玩",
+  }
+};
+
+var curLang=localStorage.getItem('refo_lang')||'tr';
+
+function setLang(lang){
+  curLang=lang;
+  localStorage.setItem('refo_lang',lang);
+  applyLang();
+  document.querySelectorAll('.cat').forEach(function(b){b.classList.remove('cat-active')});
+  document.getElementById('lang-'+lang).classList.add('cat-active');
+}
+
+function applyLang(){
+  var L=LANGS[curLang];
+  document.getElementById('header-sub').innerHTML=L.sub;
+  document.getElementById('section-label').textContent=L.sectionLabel;
+  document.getElementById('wm-type').textContent=L.wm_type;
+  document.getElementById('wm-name').textContent=L.wm_name;
+  document.getElementById('wm-desc').textContent=L.wm_desc;
+  document.getElementById('wm-play').textContent=L.wm_play;
+  document.getElementById('rr-type').textContent=L.rr_type;
+  document.getElementById('rr-name').textContent=L.rr_name;
+  document.getElementById('rr-desc').textContent=L.rr_desc;
+  document.getElementById('rr-play').textContent=L.rr_play;
+  document.getElementById('ws-type').textContent=L.ws_type;
+  document.getElementById('ws-name').textContent=L.ws_name;
+  document.getElementById('ws-desc').textContent=L.ws_desc;
+  document.getElementById('ws-play').textContent=L.ws_play;
+  document.querySelectorAll('.badge-free').forEach(function(el){el.textContent=L.badge_free});
+  document.querySelector('.badge-popular').textContent=L.badge_popular;
+  document.querySelectorAll('.badge-soon').forEach(function(el){el.textContent=L.badge_soon});
+  document.getElementById('coming-label').textContent=L.coming_label;
+  document.getElementById('coming-title').textContent=L.coming_title;
+  document.getElementById('coming-sub').textContent=L.coming_sub;
+  document.getElementById('footer-sub').textContent=L.footer_sub;
+}
+
+// Init
+setLang(curLang);
+</script>
+</body>
+</html>
