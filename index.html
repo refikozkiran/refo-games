@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -87,7 +86,7 @@ header{
   font-weight:600;
 }
 
-/* LANG */
+/* LANGUAGE */
 
 .cats{
   display:flex;
@@ -340,41 +339,6 @@ header{
   color:#fff;
 }
 
-/* GLOW */
-
-.glow-purple{
-  position:absolute;
-  width:200px;
-  height:200px;
-  background:rgba(124,58,255,0.12);
-  border-radius:50%;
-  filter:blur(60px);
-  top:-40px;
-  right:-40px;
-}
-
-.glow-blue{
-  position:absolute;
-  width:160px;
-  height:160px;
-  background:rgba(59,130,246,0.1);
-  border-radius:50%;
-  filter:blur(50px);
-  bottom:-30px;
-  left:-30px;
-}
-
-.glow-green{
-  position:absolute;
-  width:160px;
-  height:160px;
-  background:rgba(52,211,153,0.1);
-  border-radius:50%;
-  filter:blur(50px);
-  top:-30px;
-  left:-30px;
-}
-
 /* FOOTER */
 
 footer{
@@ -412,7 +376,7 @@ footer{
 
 </header>
 
-<!-- LANG -->
+<!-- LANGUAGE -->
 
 <div class="cats">
 
@@ -436,11 +400,11 @@ footer{
 
 <div class="games">
 
-  <!-- GAME 1 -->
+  <!-- WHATS MISSING -->
 
-  <a href="https://refikozkiran.github.io/whats-missing-game/" class="gcard card-purple">
-
-    <div class="glow-purple"></div>
+  <a id="wm-link"
+     href="https://refikozkiran.github.io/whats_missing_game/?lang=tr"
+     class="gcard card-purple">
 
     <span class="card-icon">👁️</span>
 
@@ -490,11 +454,9 @@ footer{
 
   </a>
 
-  <!-- GAME 2 -->
+  <!-- REFLEX RUSH -->
 
   <div class="gcard card-blue" style="opacity:0.6;pointer-events:none;">
-
-    <div class="glow-blue"></div>
 
     <span class="card-icon">⚡</span>
 
@@ -525,11 +487,9 @@ footer{
 
   </div>
 
-  <!-- GAME 3 -->
+  <!-- WORD SNAP -->
 
   <div class="gcard card-green" style="opacity:0.6;pointer-events:none;">
-
-    <div class="glow-green"></div>
 
     <span class="card-icon">🧩</span>
 
@@ -639,6 +599,10 @@ function setLang(lang){
   curLang=lang;
 
   localStorage.setItem('refo_lang',lang);
+  localStorage.setItem('wm_lang',lang);
+
+  document.getElementById('wm-link').href =
+    "https://refikozkiran.github.io/whats_missing_game/?lang=" + lang;
 
   applyLang();
 
