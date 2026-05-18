@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-65K96GNRHJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-65K96GNRHJ');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Refo.games — Free Brain Games</title>
+
+<meta name="description" content="Free memory, puzzle and reflex games. No download needed. Play instantly in your browser.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#080b14;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* STARS */
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+
+  background-image:
+    radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 10%,rgba(255,255,255,0.7) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 60%,rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 25%,rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 70%,rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 90% 45%,rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 15% 80%,rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 85%,rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 65%,rgba(255,255,255,0.4) 0%,transparent 100%);
+
+  pointer-events:none;
+  z-index:0;
+}
+
+/* HEADER */
+
+header{
+  text-align:center;
+  padding:40px 16px 24px;
+  position:relative;
+  z-index:1;
+}
+
+.header-crown{
+  font-size:44px;
+  margin-bottom:12px;
+  display:block;
+  animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-6px);
+  }
+}
+
+.header-sub{
+  font-size:14px;
+  color:rgba(255,255,255,0.5);
+  letter-spacing:0.2px;
+}
+
+.header-sub span{
+  color:#00e5a0;
+  font-weight:600;
+}
+
+/* LANGUAGE */
+
+.cats{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  padding:0 16px 28px;
+  flex-wrap:wrap;
+  position:relative;
+  z-index:1;
+}
+
+.cat{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 18px;
+  border-radius:99px;
+  font-size:13px;
+  font-weight:700;
+  border:1.5px solid rgba(255,255,255,0.15);
+  cursor:pointer;
+  transition:all 0.2s;
+  background:transparent;
+  color:rgba(255,255,255,0.5);
+}
+
+.cat:hover{
+  border-color:rgba(255,255,255,0.4);
+  color:#fff;
+}
+
+.cat-active{
+  background:rgba(255,255,255,0.1);
+  border-color:rgba(255,255,255,0.5);
+  color:#fff;
+}
+
+/* SECTION */
+
+.section-label{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:3px;
+  color:rgba(255,255,255,0.3);
+  text-align:center;
+  text-transform:uppercase;
+  margin-bottom:16px;
+  position:relative;
+  z-index:1;
+}
+
+.section-label::before,
+.section-label::after{
+  content:'';
+  display:inline-block;
+  width:24px;
+  height:1px;
+  background:rgba(255,255,255,0.2);
+  vertical-align:middle;
+  margin:0 10px;
+}
+
+/* GAMES */
+
+.games{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding:0 16px 16px;
+  position:relative;
+  z-index:1;
+}
+
+/* CARD */
+
+.gcard{
+  border-radius:20px;
+  padding:22px 20px 18px;
+  text-decoration:none;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  transition:transform 0.25s;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.07);
+}
+
+.gcard:hover{
+  transform:translateY(-3px);
+}
+
+.card-purple{
+  background:linear-gradient(145deg,#1a0a35 0%,#2d1060 50%,#1a0a35 100%);
+  box-shadow:0 8px 32px rgba(124,58,255,0.25);
+}
+
+.card-blue{
+  background:linear-gradient(145deg,#071428 0%,#0c2454 50%,#071428 100%);
+  box-shadow:0 8px 32px rgba(59,130,246,0.2);
+}
+
+.card-green{
+  background:linear-gradient(145deg,#061a0e 0%,#0d3320 50%,#061a0e 100%);
+  box-shadow:0 8px 32px rgba(52,211,153,0.2);
+}
+
+.card-red{
+  background:linear-gradient(145deg,#1a0508 0%,#3a0d14 50%,#1a0508 100%);
+  box-shadow:0 8px 32px rgba(230,57,70,0.25);
+}
+
+.type-red{
+  color:#ff6b6b;
+}
+
+.play-red{
+  background:linear-gradient(135deg,#c1121f,#e63946);
+  color:#fff;
+}
+
+.card-icon{
+  font-size:36px;
+  margin-bottom:10px;
+}
+
+.card-type{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+
+.type-purple{
+  color:#a78bfa;
+}
+
+.type-blue{
+  color:#60a5fa;
+}
+
+.type-green{
+  color:#34d399;
+}
+
+.card-name{
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:-0.5px;
+  margin-bottom:6px;
+  line-height:1.1;
+}
+
+.card-desc{
+  font-size:13px;
+  color:rgba(255,255,255,0.5);
+  line-height:1.5;
+  margin-bottom:16px;
+}
+
+/* STATS */
+
+.card-stats{
+  display:flex;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.cstat{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;
+  padding:8px 12px;
+  text-align:center;
+  flex:1;
+}
+
+.cstat-val{
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:2px;
+}
+
+.cstat-label{
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+}
+
+/* FOOTER */
+
+.card-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.card-badges{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  font-size:11px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:99px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+.badge-free{
+  background:rgba(52,211,153,0.15);
+  color:#34d399;
+  border:1px solid rgba(52,211,153,0.3);
+}
+
+.badge-popular{
+  background:rgba(251,191,36,0.15);
+  color:#fbbf24;
+  border:1px solid rgba(251,191,36,0.3);
+}
+
+.badge-new{
+  background:rgba(96,165,250,0.15);
+  color:#60a5fa;
+  border:1px solid rgba(96,165,250,0.3);
+}
+
+/* BUTTON */
+
+.play-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  font-size:14px;
+  font-weight:700;
+  padding:10px 18px;
+  border-radius:12px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+.play-purple{
+  background:linear-gradient(135deg,#7c3aff,#a855f7);
+  color:#fff;
+}
+
+.play-blue{
+  background:linear-gradient(135deg,#2563eb,#3b82f6);
+  color:#fff;
+}
+
+.play-green{
+  background:linear-gradient(135deg,#059669,#10b981);
+  color:#fff;
+}
+
+/* FOOTER */
+
+footer{
+  text-align:center;
+  padding:32px 16px 48px;
+}
+
+.footer-domain{
+  font-size:15px;
+  font-weight:800;
+  color:#60a5fa;
+  letter-spacing:0.5px;
+  text-decoration:none;
+  margin-bottom:6px;
+  display:block;
+}
+
+.footer-sub{
+  font-size:12px;
+  color:rgba(255,255,255,0.25);
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <span class="header-crown">👑</span>
+
+  <p class="header-sub" id="header-sub">
+    No download. Just <span>play.</span>
+  </p>
+
+</header>
+
+<!-- LANGUAGE -->
+
+<div class="cats">
+
+  <button id="lang-tr" class="cat cat-active" onclick="setLang('tr')">
+    🇹🇷 Türkçe
+  </button>
+
+  <button id="lang-en" class="cat" onclick="setLang('en')">
+    🇬🇧 English
+  </button>
+
+</div>
+
+<!-- SECTION -->
+
+<div class="section-label" id="section-label">
+  Games
+</div>
+
+<!-- GAMES -->
+
+<div class="games">
+
+  <!-- WHATS MISSING -->
+
+  <a id="wm-link"
+     href="https://refikozkiran.github.io/whats_missing_game/?lang=tr"
+     target="_blank"
+     class="gcard card-purple">
+
+    <span class="card-icon">👁️</span>
+
+    <div class="card-type type-purple" id="wm-type">
+      Memory Game
+    </div>
+
+    <div class="card-name" id="wm-name">
+      What's Missing?
+    </div>
+
+    <div class="card-desc" id="wm-desc">
+      Memorize the emojis — one disappears. Which one?
+    </div>
+
+    <div class="card-stats">
+
+      <div class="cstat">
+        <div class="cstat-val">3</div>
+        <div class="cstat-label" id="wm-stat-modes">Modes</div>
+      </div>
+
+      <div class="cstat">
+        <div class="cstat-val">TR/EN</div>
+        <div class="cstat-label" id="wm-stat-lang">Language</div>
+      </div>
+
+      <div class="cstat">
+        <div class="cstat-val">∞</div>
+        <div class="cstat-label" id="wm-stat-lvl">Levels</div>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+
+      <div class="card-badges">
+        <span class="badge badge-free">✅ Free</span>
+        <span class="badge badge-popular">🔥 Popular</span>
+      </div>
+
+      <span class="play-btn play-purple" id="wm-play">
+        Play ▶
+      </span>
+
+    </div>
+
+  </a>
+
+  <!-- DEJA VU -->
+
+  <a id="dv-link"
+     href="https://refikozkiran.github.io/deja-vu-game/?lang=tr"
+     target="_blank"
+     class="gcard card-red">
+
+    <span class="card-icon">🧠</span>
+
+    <div class="card-type type-red" id="dv-type">
+      Memory Game
+    </div>
+
+    <div class="card-name" id="dv-name">
+      Déjà Vu
+    </div>
+
+    <div class="card-desc" id="dv-desc">
+      A word appears — have you seen it before? Test your memory with endless rounds.
+    </div>
+
+    <div class="card-stats">
+
+      <div class="cstat">
+        <div class="cstat-val">8</div>
+        <div class="cstat-label" id="dv-stat-cat">Categories</div>
+      </div>
+
+      <div class="cstat">
+        <div class="cstat-val">TR/EN</div>
+        <div class="cstat-label" id="dv-stat-lang">Language</div>
+      </div>
+
+      <div class="cstat">
+        <div class="cstat-val">∞</div>
+        <div class="cstat-label" id="dv-stat-lvl">Rounds</div>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+
+      <div class="card-badges">
+        <span class="badge badge-free" id="dv-badge-free">✅ Free</span>
+        <span class="badge badge-new" id="dv-badge-new">🆕 New</span>
+      </div>
+
+      <span class="play-btn play-red" id="dv-play">
+        Play ▶
+      </span>
+
+    </div>
+
+  </a>
+
+  <!-- BLOX -->
+
+  <a id="blox-link"
+     href="https://refikozkiran.github.io/blox/?lang=tr"
+     target="_blank"
+     class="gcard card-blue">
+
+    <span class="card-icon">🟦</span>
+
+    <div class="card-type type-blue" id="blox-type">
+      Puzzle Game
+    </div>
+
+    <div class="card-name" id="blox-name">
+      Blox
+    </div>
+
+    <div class="card-desc" id="blox-desc">
+      Slide and stack the blocks to clear the board.
+    </div>
+
+    <div class="card-stats">
+
+      <div class="cstat">
+        <div class="cstat-val">∞</div>
+        <div class="cstat-label" id="blox-stat-lvl">Levels</div>
+      </div>
+
+      <div class="cstat">
+        <div class="cstat-val">TR/EN</div>
+        <div class="cstat-label" id="blox-stat-lang">Language</div>
+      </div>
+
+      <div class="cstat">
+        <div class="cstat-val">🧠</div>
+        <div class="cstat-label" id="blox-stat-think">Think</div>
+      </div>
+
+    </div>
+
+    <div class="card-footer">
+
+      <div class="card-badges">
+        <span class="badge badge-free">✅ Free</span>
+        <span class="badge badge-new" id="blox-badge-new">🆕 New</span>
+      </div>
+
+      <span class="play-btn play-blue" id="blox-play">
+        Play ▶
+      </span>
+
+    </div>
+
+  </a>
+
+  <!-- WORD SNAP -->
+
+  <div class="gcard card-green" style="opacity:0.6;pointer-events:none;">
+
+    <span class="card-icon">🧩</span>
+
+    <div class="card-type type-green" id="ws-type">
+      Puzzle Game
+    </div>
+
+    <div class="card-name" id="ws-name">
+      Word Snap
+    </div>
+
+    <div class="card-desc" id="ws-desc">
+      Unscramble the word before the clock hits zero.
+    </div>
+
+    <div class="card-footer">
+
+      <div class="card-badges">
+        <span class="badge badge-free">✅ Free</span>
+        <span class="badge badge-new badge-soon">✨ Soon</span>
+      </div>
+
+      <span class="play-btn play-green" id="ws-play" style="opacity:0.5;">
+        Soon ▶
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+
+  <a href="/" class="footer-domain">
+    REFO.GAMES
+  </a>
+
+  <div class="footer-sub" id="footer-sub">
+    All games are free · Play in browser
+  </div>
+
+</footer>
+
+<script>
+
+var LANGS={
+
+  tr:{
+    sub:"Uygulama indirme. Sadece <span>oyna.</span>",
+    sectionLabel:"OYUNLAR",
+
+    wm_type:"Hafıza Oyunu",
+    wm_name:"What's Missing?",
+    wm_desc:"Emojileri hafızana al — bir tanesi kayboluyor. Hangisi?",
+    wm_play:"Oyna ▶",
+    wm_stat_modes:"Mod",
+    wm_stat_lang:"Dil",
+    wm_stat_lvl:"Seviye",
+
+    blox_type:"Bulmaca Oyunu",
+    blox_name:"Blox",
+    blox_desc:"Blokları kaydır ve tahtayı temizle.",
+    blox_play:"Oyna ▶",
+    blox_stat_lvl:"Seviye",
+    blox_stat_lang:"Dil",
+    blox_stat_think:"Düşün",
+    blox_badge_new:"🆕 Yeni",
+
+    ws_type:"Bulmaca Oyunu",
+    ws_name:"Word Snap",
+    ws_desc:"Süre bitmeden kelimeyi çöz.",
+    ws_play:"Yakında ▶",
+
+    dv_type:"Hafıza Oyunu",
+    dv_name:"Déjà Vu",
+    dv_desc:"Bir kelime beliriyor — bunu daha önce gördün mü? Sonsuz turlarla hafızanı test et.",
+    dv_play:"Oyna ▶",
+    dv_stat_cat:"Kategori",
+    dv_stat_lang:"Dil",
+    dv_stat_lvl:"Tur",
+    dv_badge_new:"🆕 Yeni",
+
+    badge_free:"✅ Ücretsiz",
+    badge_popular:"🔥 Popüler",
+    badge_soon:"✨ Yakında",
+
+    footer_sub:"Tüm oyunlar ücretsiz · Tarayıcıdan oyna"
+  },
+
+  en:{
+    sub:"No download. Just <span>play.</span>",
+    sectionLabel:"GAMES",
+
+    wm_type:"Memory Game",
+    wm_name:"What's Missing?",
+    wm_desc:"Memorize the emojis — one disappears. Which one?",
+    wm_play:"Play ▶",
+    wm_stat_modes:"Modes",
+    wm_stat_lang:"Language",
+    wm_stat_lvl:"Levels",
+
+    blox_type:"Puzzle Game",
+    blox_name:"Blox",
+    blox_desc:"Slide and stack the blocks to clear the board.",
+    blox_play:"Play ▶",
+    blox_stat_lvl:"Levels",
+    blox_stat_lang:"Language",
+    blox_stat_think:"Think",
+    blox_badge_new:"🆕 New",
+
+    ws_type:"Puzzle Game",
+    ws_name:"Word Snap",
+    ws_desc:"Unscramble the word before the clock hits zero.",
+    ws_play:"Soon ▶",
+
+    dv_type:"Memory Game",
+    dv_name:"Déjà Vu",
+    dv_desc:"A word appears — have you seen it before? Test your memory with endless rounds.",
+    dv_play:"Play ▶",
+    dv_stat_cat:"Categories",
+    dv_stat_lang:"Language",
+    dv_stat_lvl:"Rounds",
+    dv_badge_new:"🆕 New",
+
+    badge_free:"✅ Free",
+    badge_popular:"🔥 Popular",
+    badge_soon:"✨ Soon",
+
+    footer_sub:"All games are free · Play in browser"
+  }
+
+};
+
+var curLang=localStorage.getItem('refo_lang') || 'tr';
+
+function setLang(lang){
+
+  curLang=lang;
+
+  localStorage.setItem('refo_lang',lang);
+  localStorage.setItem('wm_lang',lang);
+
+  document.getElementById('wm-link').href =
+    "https://refikozkiran.github.io/whats_missing_game/?lang=" + lang;
+
+  document.getElementById('dv-link').href =
+    "https://refikozkiran.github.io/deja-vu-game/?lang=" + lang;
+
+  document.getElementById('blox-link').href =
+    "https://refikozkiran.github.io/blox/?lang=" + lang;
+
+  applyLang();
+
+  document.querySelectorAll('.cat').forEach(function(btn){
+    btn.classList.remove('cat-active');
+  });
+
+  document.getElementById('lang-'+lang)
+    .classList.add('cat-active');
+}
+
+function applyLang(){
+
+  var L=LANGS[curLang];
+
+  document.getElementById('header-sub').innerHTML=L.sub;
+
+  document.getElementById('section-label').textContent=L.sectionLabel;
+
+  document.getElementById('wm-type').textContent=L.wm_type;
+  document.getElementById('wm-name').textContent=L.wm_name;
+  document.getElementById('wm-desc').textContent=L.wm_desc;
+  document.getElementById('wm-play').textContent=L.wm_play;
+  document.getElementById('wm-stat-modes').textContent=L.wm_stat_modes;
+  document.getElementById('wm-stat-lang').textContent=L.wm_stat_lang;
+  document.getElementById('wm-stat-lvl').textContent=L.wm_stat_lvl;
+
+  document.getElementById('blox-type').textContent=L.blox_type;
+  document.getElementById('blox-name').textContent=L.blox_name;
+  document.getElementById('blox-desc').textContent=L.blox_desc;
+  document.getElementById('blox-play').textContent=L.blox_play;
+  document.getElementById('blox-stat-lvl').textContent=L.blox_stat_lvl;
+  document.getElementById('blox-stat-lang').textContent=L.blox_stat_lang;
+  document.getElementById('blox-stat-think').textContent=L.blox_stat_think;
+  document.getElementById('blox-badge-new').textContent=L.blox_badge_new;
+
+  document.getElementById('ws-type').textContent=L.ws_type;
+  document.getElementById('ws-name').textContent=L.ws_name;
+  document.getElementById('ws-desc').textContent=L.ws_desc;
+  document.getElementById('ws-play').textContent=L.ws_play;
+
+  document.getElementById('dv-type').textContent=L.dv_type;
+  document.getElementById('dv-name').textContent=L.dv_name;
+  document.getElementById('dv-desc').textContent=L.dv_desc;
+  document.getElementById('dv-play').textContent=L.dv_play;
+  document.getElementById('dv-stat-cat').textContent=L.dv_stat_cat;
+  document.getElementById('dv-stat-lang').textContent=L.dv_stat_lang;
+  document.getElementById('dv-stat-lvl').textContent=L.dv_stat_lvl;
+  document.getElementById('dv-badge-new').textContent=L.dv_badge_new;
+
+  document.querySelectorAll('.badge-free').forEach(function(el){
+    el.textContent=L.badge_free;
+  });
+
+  document.querySelector('.badge-popular').textContent=L.badge_popular;
+
+  document.querySelectorAll('.badge-soon').forEach(function(el){
+    el.textContent=L.badge_soon;
+  });
+
+  document.getElementById('footer-sub').textContent=L.footer_sub;
+}
+
+setLang(curLang);
+
+</script>
+
+</body>
+</html>
